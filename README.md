@@ -75,16 +75,20 @@ In the forward pass:
 •       Function signal are computed neuron by neuron
 
 •       Function signal of jth neuron is
-            ![image](https://user-images.githubusercontent.com/112920679/198814313-2426b3a2-5b8f-489e-af0a-674cc85bd89d.png)
-            ![image](https://user-images.githubusercontent.com/112920679/198814328-1a69a3cd-7e02-4829-b773-8338ac8dcd35.png)
-            ![image](https://user-images.githubusercontent.com/112920679/198814339-9c9e5c30-ac2d-4f50-910c-9732f83cabe4.png)
 
+![image](https://user-images.githubusercontent.com/112920679/198814313-2426b3a2-5b8f-489e-af0a-674cc85bd89d.png)
+
+![image](https://user-images.githubusercontent.com/112920679/198814328-1a69a3cd-7e02-4829-b773-8338ac8dcd35.png)
+
+![image](https://user-images.githubusercontent.com/112920679/198814339-9c9e5c30-ac2d-4f50-910c-9732f83cabe4.png)
 
 
 If jth neuron is output neuron, the m=mL  and output of j th neuron is
-               ![image](https://user-images.githubusercontent.com/112920679/198814349-a6aee083-d476-41c4-b662-8968b5fc9880.png)
+
+![image](https://user-images.githubusercontent.com/112920679/198814349-a6aee083-d476-41c4-b662-8968b5fc9880.png)
 
 Forward phase begins with in the first hidden layer and end by computing ej(n) in the output layer
+
 ![image](https://user-images.githubusercontent.com/112920679/198814353-276eadb5-116e-4941-b04e-e96befae02ed.png)
 
 
@@ -118,7 +122,84 @@ Normalize our dataset.
 8. Finally, call the functions confusion_matrix(), and the classification_report() in order to evaluate the performance of our classifier.
 
 ## PROGRAM 
+```
+# Include necessary libraries
+import pandas as pd
+import sklearn
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
+df = pd.read_csv('IRIS.csv')
+df.head
+
+names = ['sepal-length','sepal-width','petal-length','petal-width','Class']
+
+# Take first 4 columns ans assign them to variable "X"
+X = df.iloc[:,0:4]
+# Take first 5th columns and assign them to variable "Y"
+Y = df.select_dtypes(include=[object])
+X.head()
+Y.head()
+
+# Y contains all categories or classes
+Y.species.unique()
+
+# Transforming categorial into numerical values
+le = preprocessing.LabelEncoder()
+Y = Y.apply(le.fit_transform)
+Y.head()
+
+# Train and test split
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size = 0.20)
+
+# Feature Scaling
+scaler = StandardScaler() 
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+mlp = MLPClassifier(hidden_layer_sizes=(10,10,10),max_iter=1000)
+mlp.fit(X_train,Y_train.values.ravel())
+predictions = mlp.predict(X_test)
+print(predictions)
+
+# Evaluation of algorithm performance in classifying flowers
+print(confusion_matrix(Y_test,predictions))
+print(classification_report(Y_test,predictions))
+```
 
 ## OUTPUT 
+### Dataset Labels
+
+![image](https://github.com/SarankumarJ/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94778101/ef33e125-bf0d-4f98-9775-ccb956a1e8dd)
+
+### X.head()
+
+![image](https://github.com/SarankumarJ/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94778101/2ef78a0e-7494-4f0a-b1ce-4b8b3a4e74df)
+
+### Y.head()
+
+![image](https://github.com/SarankumarJ/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94778101/c75e197d-67cc-4e5b-aa06-8506cdba2d83)
+
+### Unique Values in Y
+
+![image](https://github.com/SarankumarJ/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94778101/d07d75a6-24ef-4939-86ee-b4cd47818e7c)
+
+### Predictions
+
+![image](https://github.com/SarankumarJ/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94778101/6dd605be-2815-472d-9c5c-0e2f59c6dd2c)
+
+### Confusion Matrix
+
+![image](https://github.com/SarankumarJ/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94778101/1c8f1885-079e-4464-a796-67f4fdbfb193)
+
+### Classification Report
+
+![image](https://github.com/SarankumarJ/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94778101/19ab3334-5eaf-40b0-90b4-e843fedd1f03)
+
+
 
 ## RESULT
+Thus, the program to implement Multilayer Perceptron for Multi Classification is successfully implemented.
